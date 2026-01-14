@@ -28,7 +28,22 @@ const loadState = () => {
         activeTag: null,
       };
     }
-    return JSON.parse(serializedState);
+    const state = JSON.parse(serializedState);
+
+    // Migration: Add subtasks array to existing cards that don't have it
+    if (state.columns) {
+      state.columns.forEach((column) => {
+        if (column.cards) {
+          column.cards.forEach((card) => {
+            if (!card.subtasks) {
+              card.subtasks = [];
+            }
+          });
+        }
+      });
+    }
+
+    return state;
   } catch (err) {
     console.error('Error loading state:', err);
     return {

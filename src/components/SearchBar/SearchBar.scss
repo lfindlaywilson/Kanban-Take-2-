@@ -1,0 +1,140 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.search-bar {
+  @include flex-column;
+  gap: $spacing-md;
+  margin-bottom: $spacing-xl;
+
+  &__input-wrapper {
+    position: relative;
+    @include flex-center;
+  }
+
+  &__icon {
+    position: absolute;
+    left: $spacing-md;
+    color: var(--text-tertiary);
+    pointer-events: none;
+    transition: color $transition-base;
+  }
+
+  &__input {
+    width: 100%;
+    padding: $spacing-md $spacing-lg $spacing-md 48px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: $radius-lg;
+    color: var(--text-primary);
+    font-size: $font-size-base;
+    transition: all $transition-base;
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      background: var(--bg-secondary);
+      box-shadow: 0 0 0 3px var(--color-primary-glow);
+
+      ~ .search-bar__icon {
+        color: var(--color-primary);
+      }
+    }
+  }
+
+  &__clear {
+    @include button-reset;
+    @include flex-center;
+    position: absolute;
+    right: $spacing-md;
+    width: 28px;
+    height: 28px;
+    border-radius: $radius-sm;
+    color: var(--text-tertiary);
+    transition: all $transition-fast;
+
+    &:hover {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+    }
+  }
+
+  &__filters {
+    @include flex-between;
+    gap: $spacing-md;
+    flex-wrap: wrap;
+  }
+
+  &__tags {
+    display: flex;
+    gap: $spacing-sm;
+    flex-wrap: wrap;
+  }
+
+  &__tag {
+    @include button-reset;
+    @include flex-center;
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-md;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    transition: all $transition-base;
+    position: relative;
+
+    &:hover {
+      background: var(--bg-secondary);
+      border-color: var(--tag-color);
+      transform: scale(1.1);
+    }
+
+    &.active {
+      background: var(--tag-color);
+      border-color: var(--tag-color);
+      box-shadow: 0 0 16px var(--tag-color);
+
+      .search-bar__tag-dot {
+        background: var(--bg-primary);
+        transform: scale(1.2);
+      }
+    }
+
+    &-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--tag-color);
+      transition: all $transition-base;
+    }
+  }
+
+  &__clear-all {
+    @include button-reset;
+    padding: $spacing-xs $spacing-md;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    transition: all $transition-base;
+    animation: slideInRight $transition-base;
+
+    &:hover {
+      background: var(--bg-secondary);
+      color: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+  }
+}
+
+@include respond-to(md) {
+  .search-bar {
+    &__input {
+      max-width: 500px;
+    }
+  }
+}

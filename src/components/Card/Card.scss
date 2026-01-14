@@ -1,0 +1,203 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.card {
+  @include glass(0.9);
+  position: relative;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  cursor: grab;
+  transition: all $transition-base;
+  animation: cardEnter $transition-slow;
+  overflow: hidden;
+
+  &:hover {
+    @include card-shadow(true);
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  &.dragging {
+    opacity: 0.5;
+    transform: scale(1.05) rotate(3deg);
+    box-shadow: $shadow-xl, $glow-card;
+    cursor: grabbing;
+    z-index: $z-modal;
+  }
+
+  &.editing {
+    cursor: default;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-glow), var(--shadow-lg);
+  }
+
+  &__color-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--tag-color);
+    box-shadow: 0 0 10px var(--tag-color);
+  }
+
+  &__header {
+    @include flex-between;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__title {
+    flex: 1;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: var(--text-primary);
+    line-height: $line-height-tight;
+    margin: 0;
+    word-break: break-word;
+  }
+
+  &__actions {
+    display: flex;
+    gap: $spacing-xs;
+    opacity: 0;
+    transition: opacity $transition-base;
+  }
+
+  &:hover &__actions {
+    opacity: 1;
+  }
+
+  &__action-btn {
+    @include button-reset;
+    @include flex-center;
+    width: 28px;
+    height: 28px;
+    border-radius: $radius-sm;
+    color: var(--text-tertiary);
+    background: var(--bg-tertiary);
+    transition: all $transition-fast;
+
+    &:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      transform: scale(1.1);
+    }
+
+    &--delete:hover {
+      color: $tag-red;
+      background: rgba($tag-red, 0.1);
+    }
+  }
+
+  &__notes-wrapper {
+    margin-bottom: $spacing-sm;
+  }
+
+  &__notes {
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+    line-height: $line-height-relaxed;
+    margin: 0;
+    word-break: break-word;
+
+    &:not(.expanded) {
+      @include line-clamp(3);
+    }
+
+    &.expanded {
+      display: block;
+    }
+  }
+
+  &__notes-toggle {
+    @include button-reset;
+    margin-top: $spacing-xs;
+    font-size: $font-size-xs;
+    color: var(--color-primary);
+    font-weight: $font-weight-medium;
+    transition: color $transition-fast;
+
+    &:hover {
+      color: var(--color-secondary);
+      text-decoration: underline;
+    }
+  }
+
+  &__footer {
+    @include flex-between;
+    margin-top: $spacing-md;
+    padding-top: $spacing-sm;
+    border-top: 1px solid var(--border-color);
+  }
+
+  &__color-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: $radius-sm;
+    background: var(--tag-color);
+    box-shadow: 0 0 8px var(--tag-color);
+  }
+
+  &__timestamp {
+    font-size: $font-size-xs;
+    color: var(--text-muted);
+  }
+
+  // Edit Form Styles
+  &__edit-form {
+    @include flex-column;
+    gap: $spacing-sm;
+  }
+
+  &__edit-title {
+    width: 100%;
+    padding: $spacing-sm;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: $radius-md;
+    color: var(--text-primary);
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    transition: all $transition-base;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 2px var(--color-primary-glow);
+    }
+  }
+
+  &__edit-notes {
+    width: 100%;
+    padding: $spacing-sm;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: $radius-md;
+    color: var(--text-primary);
+    font-size: $font-size-sm;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 60px;
+    transition: all $transition-base;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 2px var(--color-primary-glow);
+    }
+  }
+
+  &__edit-actions {
+    display: flex;
+    gap: $spacing-sm;
+    justify-content: flex-end;
+  }
+}
+
+// Animation for card exit (when deleted)
+.card-exit {
+  animation: cardExit $transition-base forwards;
+}

@@ -1,0 +1,117 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.column {
+  @include flex-column;
+  flex-shrink: 0;
+  width: 100%;
+  min-width: 320px;
+  max-width: 380px;
+  height: fit-content;
+  max-height: calc(100vh - 250px);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-xl;
+  overflow: hidden;
+  transition: all $transition-base;
+  animation: slideInUp $transition-slow;
+
+  @include respond-to(md) {
+    min-width: 350px;
+  }
+
+  &:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-md);
+  }
+
+  &__header {
+    padding: $spacing-lg;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-tertiary);
+  }
+
+  &__title-wrapper {
+    @include flex-between;
+    align-items: center;
+  }
+
+  &__title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: var(--text-primary);
+    margin: 0;
+    @include gradient-text;
+  }
+
+  &__count {
+    @include flex-center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 $spacing-sm;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: $radius-full;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-bold;
+    color: var(--color-primary);
+  }
+
+  &__content {
+    @include flex-column;
+    flex: 1;
+    overflow-y: auto;
+    padding: $spacing-lg;
+    gap: $spacing-md;
+    @include custom-scrollbar;
+  }
+
+  &__cards {
+    @include flex-column;
+    gap: $spacing-md;
+    min-height: 100px;
+  }
+
+  &__empty {
+    @include flex-center;
+    @include flex-column;
+    padding: $spacing-3xl $spacing-lg;
+    text-align: center;
+    color: var(--text-muted);
+
+    svg {
+      opacity: 0.3;
+      margin-bottom: $spacing-md;
+    }
+
+    p {
+      margin: 0;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+    }
+  }
+
+  &__add-card {
+    margin-top: auto;
+  }
+}
+
+// Stagger animation for multiple columns
+.kanban-board__columns {
+  .column {
+    @for $i from 1 through 6 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{($i - 1) * 100}ms;
+      }
+    }
+  }
+}
+
+// Drop zone highlight during drag
+.column[data-droppable="true"] {
+  &.drag-over {
+    background: var(--bg-tertiary);
+    border-color: var(--color-primary);
+    box-shadow: inset 0 0 0 2px var(--color-primary-glow);
+  }
+}

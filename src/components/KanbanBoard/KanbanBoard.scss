@@ -1,0 +1,190 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.kanban-board {
+  @include flex-column;
+  width: 100%;
+  min-height: 100vh;
+  padding: $spacing-xl;
+  background: var(--bg-primary);
+
+  @include respond-to(lg) {
+    padding: $spacing-2xl;
+  }
+
+  &__header {
+    @include flex-column;
+    gap: $spacing-xl;
+    margin-bottom: $spacing-2xl;
+    animation: fadeIn $transition-slow;
+  }
+
+  &__title-section {
+    @include flex-column;
+    gap: $spacing-sm;
+  }
+
+  &__title {
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-bold;
+    margin: 0;
+    @include gradient-text;
+    animation: slideInDown $transition-slow;
+
+    @include respond-to(sm) {
+      font-size: clamp($font-size-3xl, 5vw, $font-size-4xl);
+    }
+  }
+
+  &__subtitle {
+    font-size: $font-size-lg;
+    color: var(--text-secondary);
+    margin: 0;
+    animation: slideInDown $transition-slow 100ms;
+  }
+
+  &__columns {
+    display: flex;
+    gap: $spacing-xl;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding-bottom: $spacing-xl;
+    @include custom-scrollbar;
+
+    // Horizontal scroll snap
+    scroll-snap-type: x proximity;
+
+    & > * {
+      scroll-snap-align: start;
+    }
+
+    @include respond-to(md) {
+      gap: $spacing-2xl;
+    }
+  }
+}
+
+// Drag Overlay Styles
+.drag-overlay {
+  opacity: 0.9;
+  transform: scale(1.05) rotate(3deg);
+  box-shadow: $shadow-xl, $glow-card;
+  cursor: grabbing;
+  animation: dragCard $transition-slow infinite alternate;
+
+  .card {
+    cursor: grabbing;
+    pointer-events: none;
+  }
+}
+
+// Loading State
+.kanban-board__loading {
+  @include flex-center;
+  min-height: 400px;
+  color: var(--text-tertiary);
+
+  &::after {
+    content: '';
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--border-color);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+// Empty State
+.kanban-board__empty {
+  @include flex-center;
+  @include flex-column;
+  min-height: 400px;
+  padding: $spacing-3xl;
+  text-align: center;
+  animation: fadeIn $transition-slow;
+
+  svg {
+    width: 96px;
+    height: 96px;
+    color: var(--text-muted);
+    opacity: 0.3;
+    margin-bottom: $spacing-xl;
+  }
+
+  h3 {
+    font-size: $font-size-2xl;
+    color: var(--text-secondary);
+    margin-bottom: $spacing-sm;
+  }
+
+  p {
+    font-size: $font-size-lg;
+    color: var(--text-tertiary);
+    margin-bottom: $spacing-xl;
+  }
+}
+
+// Responsive Adjustments
+@media (max-width: $breakpoint-md) {
+  .kanban-board {
+    padding: $spacing-lg;
+
+    &__header {
+      gap: $spacing-lg;
+      margin-bottom: $spacing-xl;
+    }
+
+    &__title {
+      font-size: $font-size-3xl;
+    }
+
+    &__subtitle {
+      font-size: $font-size-base;
+    }
+
+    &__columns {
+      gap: $spacing-lg;
+    }
+  }
+
+  .column {
+    min-width: 300px;
+    max-width: 90vw;
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .kanban-board {
+    padding: $spacing-md;
+
+    &__header {
+      gap: $spacing-md;
+      margin-bottom: $spacing-lg;
+    }
+
+    &__title {
+      font-size: $font-size-2xl;
+    }
+
+    &__subtitle {
+      font-size: $font-size-sm;
+    }
+
+    &__columns {
+      gap: $spacing-md;
+      padding-bottom: $spacing-lg;
+    }
+  }
+
+  .column {
+    min-width: 280px;
+  }
+}
+
+// Dark/Light theme transition
+[data-theme="light"] .kanban-board {
+  &__title {
+    @include gradient-text(darken($color-primary, 10%), darken($color-secondary, 10%));
+  }
+}

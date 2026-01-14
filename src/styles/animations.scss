@@ -1,0 +1,289 @@
+@import './variables.scss';
+
+// Fade In
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Fade Out
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+// Slide In from Bottom
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Slide In from Top
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Slide In from Left
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Slide In from Right
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Scale In
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Scale Out
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+// Bounce In
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// Shake (for errors)
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-4px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(4px);
+  }
+}
+
+// Pulse
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// Glow Pulse
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba($color-primary, 0.4),
+                0 0 20px rgba($color-primary, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba($color-primary, 0.6),
+                0 0 40px rgba($color-primary, 0.4);
+  }
+}
+
+// Spin
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Float
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+// Wiggle
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-3deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+// Drag Card (used during drag and drop)
+@keyframes dragCard {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.03) rotate(2deg);
+  }
+  100% {
+    transform: scale(1.05) rotate(0deg);
+    opacity: 0.9;
+  }
+}
+
+// Card Enter (when adding new card)
+@keyframes cardEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  60% {
+    transform: translateY(2px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// Card Exit (when deleting card)
+@keyframes cardExit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8) translateX(20px);
+  }
+}
+
+// Utility Classes
+.animate-fade-in {
+  animation: fadeIn $transition-base forwards;
+}
+
+.animate-fade-out {
+  animation: fadeOut $transition-base forwards;
+}
+
+.animate-slide-up {
+  animation: slideInUp $transition-slow forwards;
+}
+
+.animate-slide-down {
+  animation: slideInDown $transition-slow forwards;
+}
+
+.animate-slide-left {
+  animation: slideInLeft $transition-slow forwards;
+}
+
+.animate-slide-right {
+  animation: slideInRight $transition-slow forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn $transition-base forwards;
+}
+
+.animate-scale-out {
+  animation: scaleOut $transition-base forwards;
+}
+
+.animate-bounce-in {
+  animation: bounceIn $transition-bounce forwards;
+}
+
+.animate-shake {
+  animation: shake 500ms ease-in-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-glow-pulse {
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-wiggle {
+  animation: wiggle 500ms ease-in-out;
+}
+
+// Stagger Animation Delays (for lists)
+@for $i from 1 through 20 {
+  .animate-stagger-#{$i} {
+    animation-delay: #{$i * 50}ms;
+  }
+}

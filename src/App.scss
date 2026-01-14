@@ -1,0 +1,27 @@
+@import './styles/variables.scss';
+@import './styles/mixins.scss';
+
+.app {
+  position: relative;
+  min-height: 100vh;
+  background: var(--bg-primary);
+  transition: background-color $transition-slow;
+
+  &__theme-toggle {
+    position: fixed;
+    top: $spacing-xl;
+    right: $spacing-xl;
+    z-index: $z-sticky;
+    animation: fadeIn $transition-slow 500ms;
+
+    @media (max-width: $breakpoint-md) {
+      top: $spacing-lg;
+      right: $spacing-lg;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      top: $spacing-md;
+      right: $spacing-md;
+    }
+  }
+}

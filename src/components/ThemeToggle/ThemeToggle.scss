@@ -1,0 +1,72 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.theme-toggle {
+  @include button-reset;
+  @include flex-center;
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-lg;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  transition: all $transition-base;
+  overflow: hidden;
+
+  &:hover {
+    background: var(--bg-secondary);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-md), $glow-primary;
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &__icon {
+    @include flex-center;
+    transition: all $transition-slow;
+
+    &.moon {
+      animation: fadeIn $transition-base, rotate-moon $transition-slow;
+    }
+
+    &.sun {
+      animation: fadeIn $transition-base, rotate-sun $transition-slow;
+    }
+
+    svg {
+      transition: transform $transition-base;
+    }
+  }
+
+  &:hover &__icon {
+    svg {
+      transform: rotate(20deg) scale(1.1);
+    }
+  }
+}
+
+@keyframes rotate-moon {
+  from {
+    transform: rotate(-90deg) scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes rotate-sun {
+  from {
+    transform: rotate(90deg) scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}

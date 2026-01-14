@@ -105,6 +105,7 @@ const boardSlice = createSlice({
           notes: notes || '',
           color: color || 'green',
           tags: tags || [],
+          subtasks: [],
           createdAt: Date.now(),
           updatedAt: Date.now(),
         };
@@ -169,6 +170,60 @@ const boardSlice = createSlice({
         const [removed] = column.cards.splice(startIndex, 1);
         column.cards.splice(endIndex, 0, removed);
         saveState(state);
+      }
+    },
+
+    // Subtask Actions
+    addSubtask: (state, action) => {
+      const { columnId, cardId, text } = action.payload;
+      const column = state.columns.find((col) => col.id === columnId);
+
+      if (column) {
+        const card = column.cards.find((c) => c.id === cardId);
+        if (card) {
+          if (!card.subtasks) {
+            card.subtasks = [];
+          }
+          const newSubtask = {
+            id: uuidv4(),
+            text: text || '',
+            completed: false,
+          };
+          card.subtasks.push(newSubtask);
+          card.updatedAt = Date.now();
+          saveState(state);
+        }
+      }
+    },
+
+    toggleSubtask: (state, action) => {
+      const { columnId, cardId, subtaskId } = action.payload;
+      const column = state.columns.find((col) => col.id === columnId);
+
+      if (column) {
+        const card = column.cards.find((c) => c.id === cardId);
+        if (card && card.subtasks) {
+          const subtask = card.subtasks.find((s) => s.id === subtaskId);
+          if (subtask) {
+            subtask.completed = !subtask.completed;
+            card.updatedAt = Date.now();
+            saveState(state);
+          }
+        }
+      }
+    },
+
+    deleteSubtask: (state, action) => {
+      const { columnId, cardId, subtaskId } = action.payload;
+      const column = state.columns.find((col) => col.id === columnId);
+
+      if (column) {
+        const card = column.cards.find((c) => c.id === cardId);
+        if (card && card.subtasks) {
+          card.subtasks = card.subtasks.filter((s) => s.id !== subtaskId);
+          card.updatedAt = Date.now();
+          saveState(state);
+        }
       }
     },
 
@@ -283,6 +338,9 @@ export const {
   deleteCard,
   moveCard,
   reorderCards,
+  addSubtask,
+  toggleSubtask,
+  deleteSubtask,
   setSearchQuery,
   setActiveTag,
   clearFilters,

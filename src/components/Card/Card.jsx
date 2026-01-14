@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useDispatch } from 'react-redux';
-import { updateCard, deleteCard } from '../../store/slices/boardSlice';
+import { updateCard, deleteCard, addSubtask, toggleSubtask, deleteSubtask } from '../../store/slices/boardSlice';
 import './Card.scss';
 
 const TAG_COLORS = {
@@ -20,6 +20,8 @@ function Card({ card, columnId }) {
   const [editedTitle, setEditedTitle] = useState(card.title);
   const [editedNotes, setEditedNotes] = useState(card.notes);
   const [showFullNotes, setShowFullNotes] = useState(false);
+  const [newSubtaskText, setNewSubtaskText] = useState('');
+  const [isAddingSubtask, setIsAddingSubtask] = useState(false);
 
   const {
     attributes,
@@ -69,6 +71,49 @@ function Card({ card, columnId }) {
       handleSave();
     } else if (e.key === 'Escape') {
       handleCancel();
+    }
+  };
+
+  const handleAddSubtask = () => {
+    if (newSubtaskText.trim()) {
+      dispatch(
+        addSubtask({
+          columnId,
+          cardId: card.id,
+          text: newSubtaskText.trim(),
+        })
+      );
+      setNewSubtaskText('');
+      setIsAddingSubtask(false);
+    }
+  };
+
+  const handleToggleSubtask = (subtaskId) => {
+    dispatch(
+      toggleSubtask({
+        columnId,
+        cardId: card.id,
+        subtaskId,
+      })
+    );
+  };
+
+  const handleDeleteSubtask = (subtaskId) => {
+    dispatch(
+      deleteSubtask({
+        columnId,
+        cardId: card.id,
+        subtaskId,
+      })
+    );
+  };
+
+  const handleSubtaskKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleAddSubtask();
+    } else if (e.key === 'Escape') {
+      setNewSubtaskText('');
+      setIsAddingSubtask(false);
     }
   };
 
@@ -181,6 +226,112 @@ function Card({ card, columnId }) {
                 </button>
               )}
             </div>
+          )}
+
+          {/* Subtasks Section */}
+          {card.subtasks && card.subtasks.length > 0 && (
+            <div className="card__subtasks">
+              {card.subtasks.map((subtask) => (
+                <div key={subtask.id} className="card__subtask">
+                  <label className="card__subtask-label">
+                    <input
+                      type="checkbox"
+                      className="card__subtask-checkbox"
+                      checked={subtask.completed}
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        handleToggleSubtask(subtask.id);
+                      }}
+                    />
+                    <span className={`card__subtask-text ${subtask.completed ? 'completed' : ''}`}>
+                      {subtask.text}
+                    </span>
+                  </label>
+                  <button
+                    className="card__subtask-delete"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteSubtask(subtask.id);
+                    }}
+                    aria-label="Delete subtask"
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <line x1="18" y1="6" x2="6" y2="18" />
+                      <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Add Subtask Section */}
+          {isAddingSubtask ? (
+            <div className="card__add-subtask">
+              <input
+                type="text"
+                className="card__subtask-input"
+                value={newSubtaskText}
+                onChange={(e) => setNewSubtaskText(e.target.value)}
+                onKeyDown={handleSubtaskKeyDown}
+                placeholder="Add subtask..."
+                autoFocus
+                onClick={(e) => e.stopPropagation()}
+              />
+              <div className="card__subtask-actions">
+                <button
+                  className="btn btn-sm btn-primary"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAddSubtask();
+                  }}
+                >
+                  Add
+                </button>
+                <button
+                  className="btn btn-sm btn-ghost"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setNewSubtaskText('');
+                    setIsAddingSubtask(false);
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              className="card__add-subtask-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsAddingSubtask(true);
+              }}
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Add subtask
+            </button>
           )}
 
           <div className="card__footer">

@@ -195,6 +195,131 @@
     gap: $spacing-sm;
     justify-content: flex-end;
   }
+
+  // Subtasks Styles
+  &__subtasks {
+    @include flex-column;
+    gap: $spacing-xs;
+    margin-top: $spacing-sm;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__subtask {
+    @include flex-between;
+    gap: $spacing-xs;
+    padding: $spacing-xs;
+    border-radius: $radius-sm;
+    background: var(--bg-tertiary);
+    transition: background $transition-fast;
+
+    &:hover {
+      background: var(--bg-secondary);
+    }
+  }
+
+  &__subtask-label {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    flex: 1;
+    cursor: pointer;
+  }
+
+  &__subtask-checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--color-primary);
+  }
+
+  &__subtask-text {
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+    line-height: $line-height-tight;
+    transition: all $transition-fast;
+
+    &.completed {
+      text-decoration: line-through;
+      color: var(--text-muted);
+      opacity: 0.7;
+    }
+  }
+
+  &__subtask-delete {
+    @include button-reset;
+    @include flex-center;
+    width: 20px;
+    height: 20px;
+    border-radius: $radius-sm;
+    color: var(--text-muted);
+    opacity: 0;
+    transition: all $transition-fast;
+
+    &:hover {
+      color: $tag-red;
+      background: rgba($tag-red, 0.1);
+    }
+  }
+
+  &__subtask:hover &__subtask-delete {
+    opacity: 1;
+  }
+
+  &__add-subtask {
+    @include flex-column;
+    gap: $spacing-xs;
+    margin-top: $spacing-sm;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__subtask-input {
+    width: 100%;
+    padding: $spacing-sm;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: $radius-md;
+    color: var(--text-primary);
+    font-size: $font-size-sm;
+    transition: all $transition-base;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 2px var(--color-primary-glow);
+    }
+  }
+
+  &__subtask-actions {
+    display: flex;
+    gap: $spacing-sm;
+    justify-content: flex-end;
+  }
+
+  &__add-subtask-btn {
+    @include button-reset;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    padding: $spacing-xs $spacing-sm;
+    margin-top: $spacing-sm;
+    font-size: $font-size-sm;
+    color: var(--text-tertiary);
+    border-radius: $radius-sm;
+    transition: all $transition-fast;
+
+    &:hover {
+      color: var(--color-primary);
+      background: var(--bg-tertiary);
+    }
+
+    svg {
+      transition: transform $transition-fast;
+    }
+
+    &:hover svg {
+      transform: rotate(90deg);
+    }
+  }
 }
 
 // Animation for card exit (when deleted)
